@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>大话西游2 孩子职业评价计算器</title>
+  <!-- 引入Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- 引入Font Awesome -->
+  <link href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css" rel="stylesheet">
+  
+  <!-- 配置Tailwind自定义颜色和字体 -->
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            primary: '#CD5C5C', // 采用中国风红色作为主色调
+            secondary: '#228B22',
+            neutral: '#F8F8FF',
+            dark: '#2F4F4F'
+          },
+          fontFamily: {
+            sans: ['SimHei', 'system-ui', 'sans-serif'],
+          },
+        },
+      }
+    }
+  </script>
+  
+  <style type="text/tailwindcss">
+    @layer utilities {
+      .input-focus {
+        @apply focus:ring-2 focus:ring-primary/50 focus:border-primary focus:outline-none;
+      }
+      .card-shadow {
+        @apply shadow-lg hover:shadow-xl transition-shadow duration-300;
+      }
+      .input-error {
+        @apply border-red-500 animate-pulse;
+      }
+    }
+  </style>
+</head>
+<body class="bg-gradient-to-br from-amber-50 to-orange-100 min-h-screen font-sans">
+  <div class="container mx-auto px-4 py-12 max-w-4xl">
+    <!-- 计算器卡片 -->
+    <div class="bg-white rounded-2xl p-6 md:p-8 card-shadow">
+      <h1 class="text-[clamp(1.5rem,3vw,2.5rem)] font-bold text-dark mb-6 text-center">大话西游2 孩子职业评价计算器</h1>
+      
+      <p class="text-gray-600 text-center mb-4">
+        职业评价 = 600×(最大值)<sup>0.2</sup> + 180×(第二大值)<sup>0.2</sup> + 150×(第三大值)<sup>0.2</sup> + 
+        120×(第四大值)<sup>0.2</sup> + 90×(第五大值)<sup>0.2</sup> + 60×(第六大值)<sup>0.2</sup> + 
+        30×(最小值)<sup>0.2</sup> - 20×玩性
+      </p>
+      
+      <p class="text-gray-500 text-center mb-6 text-sm">
+        说明：气质、内力、智力、耐力、名气、叛逆、道德7个属性会按从大到小排序后，分别对应上述系数计算
+      </p>
+      
+      <p class="text-gray-500 text-center mb-6 text-sm">
+        输入范围限制：0-1200（属性最大值为1200）
+      </p>
+      
+      <!-- 输入区域 -->
+      <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4 mb-8">
+        <!-- 气质 -->
+        <div class="space-y-2">
+          <label for="inputA" class="block text-sm font-medium text-gray-700">
+            <i class="fa fa-heart mr-1 text-primary"></i>气质
+          </label>
+          <input type="number" id="inputA" class="w-full px-4 py-2 border border-gray-300 rounded-lg input-focus transition-all" 
+                 step="any" placeholder="输入气质值" value="1200" min="0" max="1200">
+        </div>
+        
+        <!-- 内力 -->
+        <div class="space-y-2">
+          <label for="inputB" class="block text-sm font-medium text-gray-700">
+            <i class="fa fa-bolt mr-1 text-primary"></i>内力
+          </label>
+          <input type="number" id="inputB" class="w-full px-4 py-2 border border-gray-300 rounded-lg input-focus transition-all" 
+                 step="any" placeholder="输入内力值" value="1200" min="0" max="1200">
+        </div>
+        
+        <!-- 智力 -->
+        <div class="space-y-2">
+          <label for="inputC" class="block text-sm font-medium text-gray-700">
+            <i class="fa fa-brain mr-1 text-primary"></i>智力
+          </label>
+          <input type="number" id="inputC" class="w-full px-4 py-2 border border-gray-300 rounded-lg input-focus transition-all" 
+                 step="any" placeholder="输入智力值" value="1200" min="0" max="1200">
+        </div>
+        
+        <!-- 耐力 -->
+        <div class="space-y-2">
+          <label for="inputD" class="block text-sm font-medium text-gray-700">
+            <i class="fa fa-shield mr-1 text-primary"></i>耐力
+          </label>
+          <input type="number" id="inputD" class="w-full px-4 py-2 border border-gray-300 rounded-lg input-focus transition-all" 
+                 step="any" placeholder="输入耐力值" value="1200" min="0" max="1200">
+        </div>
+        
+        <!-- 名气 -->
+        <div class="space-y-2">
+          <label for="inputE" class="block text-sm font-medium text-gray-700">
+            <i class="fa fa-star mr-1 text-primary"></i>名气
+          </label>
+          <input type="number" id="inputE" class="w-full px-4 py-2 border border-gray-300 rounded-lg input-focus transition-all" 
+                 step="any" placeholder="输入名气值" value="1200" min="0" max="1200">
+        </div>
+        
+        <!-- 叛逆 -->
+        <div class="space-y-2">
+          <label for="inputF" class="block text-sm font-medium text-gray-700">
+            <i class="fa fa-balance-scale mr-1 text-primary"></i>叛逆
+          </label>
+          <input type="number" id="inputF" class="w-full px-4 py-2 border border-gray-300 rounded-lg input-focus transition-all" 
+                 step="any" placeholder="输入叛逆值" value="1200" min="0" max="1200">
+        </div>
+        
+        <!-- 道德 -->
+        <div class="space-y-2">
+          <label for="inputG" class="block text-sm font-medium text-gray-700">
+            <i class="fa fa-hand-paper-o mr-1 text-primary"></i>道德
+          </label>
+          <input type="number" id="inputG" class="w-full px-4 py-2 border border-gray-300 rounded-lg input-focus transition-all" 
+                 step="any" placeholder="输入道德值" value="1200" min="0" max="1200">
+        </div>
+        
+        <!-- 玩性 -->
+        <div class="space-y-2">
+          <label for="inputH" class="block text-sm font-medium text-gray-700">
+            <i class="fa fa-gamepad mr-1 text-primary"></i>玩性
+          </label>
+          <input type="number" id="inputH" class="w-full px-4 py-2 border border-gray-300 rounded-lg input-focus transition-all" 
+                 step="any" placeholder="输入玩性值" value="0" min="0" max="1200">
+        </div>
+      </div>
+      
+      <!-- 计算按钮 -->
+      <div class="text-center mb-8">
+        <button id="calculateBtn" class="bg-primary hover:bg-primary/90 text-white font-medium px-8 py-3 rounded-lg transition-all transform hover:scale-105 active:scale-95 focus:ring-4 focus:ring-primary/30">
+          <i class="fa fa-calculator mr-2"></i>计算职业评价
+        </button>
+      </div>
+      
+      <!-- 结果显示区域 -->
+      <div class="bg-neutral rounded-xl p-6 border border-gray-200">
+        <h2 class="text-lg font-semibold text-gray-800 mb-3">孩子职业评价结果</h2>
+        <div id="result" class="text-[clamp(1.2rem,2vw,1.8rem)] font-bold text-secondary min-h-[50px] flex items-center justify-center bg-white rounded-lg p-4 border border-gray-200 transition-all">
+          请点击计算按钮查看结果
+        </div>
+      </div>
+
+      <!-- 排序信息展示区 -->
+      <div class="bg-amber-50 rounded-xl p-4 mb-6 border border-amber-100">
+        <h3 class="text-sm font-medium text-amber-800 mb-2">属性排序（实时更新）</h3>
+        <div id="sortInfo" class="text-sm text-gray-700 grid grid-cols-1 md:grid-cols-2 gap-2">
+          <div>1. 最大值: 1200（系数×600）</div>
+          <div>2. 第二大值: 1200（系数×180）</div>
+          <div>3. 第三大值: 1200（系数×150）</div>
+          <div>4. 第四大值: 1200（系数×120）</div>
+          <div>5. 第五大值: 1200（系数×90）</div>
+          <div>6. 第六大值: 1200（系数×60）</div>
+          <div>7. 最小值: 1200（系数×30）</div>
+        </div>
+      </div>
+      
+      <!-- 示例说明 -->
+      <div class="bg-gray-50 rounded-xl p-4 mb-6 border border-gray-100">
+        <h3 class="text-sm font-medium text-gray-800 mb-2">示例参考</h3>
+        <ul class="text-sm text-gray-600 space-y-1">
+          <li>• 7个属性均为1000，叛逆和道德为0时，评价为4538</li>
+          <li>• 气质1200、内力1000、智力800、耐力600、名气500、叛逆300、道德100时，评价为4771</li>
+          <li>• 7个属性都达到1200，玩性为0时，评价为5078</li>
+        </ul>
+      </div>
+      
+    </div>
+    
+    <!-- 页脚 -->
+    <footer class="mt-12 text-center text-gray-500 text-sm">
+      <p>大话西游2 孩子职业评价计算器 &copy; 2023</p>
+    </footer>
+  </div>
+
+  <script>
+    // 获取DOM元素
+    const calculateBtn = document.getElementById('calculateBtn');
+    const resultElement = document.getElementById('result');
+    const sortInfoElement = document.getElementById('sortInfo');
+    const inputs = {
+      A: document.getElementById('inputA'),
+      B: document.getElementById('inputB'),
+      C: document.getElementById('inputC'),
+      D: document.getElementById('inputD'),
+      E: document.getElementById('inputE'),
+      F: document.getElementById('inputF'),
+      G: document.getElementById('inputG'),
+      H: document.getElementById('inputH')
+    };
+    
+    // 系数数组（按从大到小顺序对应排序后的属性值）
+    const coefficients = [600, 180, 150, 120, 90, 60, 30];
+    
+    // 更新排序信息显示
+    function updateSortInfo() {
+      // 获取7个属性的值
+      const values = [
+        parseFloat(inputs.A.value) || 0,
+        parseFloat(inputs.B.value) || 0,
+        parseFloat(inputs.C.value) || 0,
+        parseFloat(inputs.D.value) || 0,
+        parseFloat(inputs.E.value) || 0,
+        parseFloat(inputs.F.value) || 0,
+        parseFloat(inputs.G.value) || 0
+      ];
+      
+      // 复制数组并按从大到小排序
+      const sortedValues = [...values].sort((a, b) => b - a);
+      
+      // 更新排序信息显示
+      sortInfoElement.innerHTML = `
+        <div>1. 最大值: ${sortedValues[0]}（系数×${coefficients[0]}）</div>
+        <div>2. 第二大值: ${sortedValues[1]}（系数×${coefficients[1]}）</div>
+        <div>3. 第三大值: ${sortedValues[2]}（系数×${coefficients[2]}）</div>
+        <div>4. 第四大值: ${sortedValues[3]}（系数×${coefficients[3]}）</div>
+        <div>5. 第五大值: ${sortedValues[4]}（系数×${coefficients[4]}）</div>
+        <div>6. 第六大值: ${sortedValues[5]}（系数×${coefficients[5]}）</div>
+        <div>7. 最小值: ${sortedValues[6]}（系数×${coefficients[6]}）</div>
+      `;
+    }
+    
+    // 计算函数
+    function calculate() {
+      // 清除之前的错误状态
+      Object.values(inputs).forEach(input => {
+        input.classList.remove('input-error');
+      });
+      resultElement.classList.remove('text-red-500');
+      
+      // 验证输入并转换为数值
+      const values = {};
+      let isValid = true;
+      let errorMessage = '';
+      
+      for (const key in inputs) {
+        const value = parseFloat(inputs[key].value);
+        
+        // 检查是否为有效数字
+        if (isNaN(value)) {
+          isValid = false;
+          inputs[key].classList.add('input-error');
+          errorMessage = '请输入有效的数值';
+        } 
+        // 检查是否在有效范围内
+        else if (value < 0 || value > 1200) {
+          isValid = false;
+          inputs[key].classList.add('input-error');
+          errorMessage = `输入值必须在0-1200之间`;
+        } else {
+          values[key] = value;
+        }
+      }
+      
+      if (!isValid) {
+        resultElement.textContent = errorMessage;
+        resultElement.classList.add('text-red-500');
+        // 添加错误抖动动画
+        resultElement.classList.add('animate-shake');
+        setTimeout(() => {
+          resultElement.classList.remove('animate-shake');
+        }, 500);
+        return;
+      }
+      
+      // 获取7个属性的值并按从大到小排序
+      const sortedValues = [
+        values.A, values.B, values.C, values.D, values.E, values.F, values.G
+      ].sort((a, b) => b - a);
+      
+      // 应用计算公式：排序后的值分别乘以对应的系数
+      let sum = 0;
+      for (let i = 0; i < sortedValues.length; i++) {
+        sum += coefficients[i] * Math.pow(sortedValues[i], 0.2);
+      }
+      
+      // 减去20×玩性
+      const result = sum - 20 * values.H;
+      
+      // 显示结果，保留两位小数
+      resultElement.textContent = result.toFixed(2);
+      
+      // 添加计算成功的动画效果
+      resultElement.classList.add('scale-110');
+      setTimeout(() => {
+        resultElement.classList.remove('scale-110');
+      }, 300);
+    }
+    
+    // 添加错误抖动动画
+    const style = document.createElement('style');
+    style.textContent = `
+      @keyframes shake {
+        0%, 100% { transform: translateX(0); }
+        10%, 30%, 50%, 70%, 90% { transform: translateX(-5px); }
+        20%, 40%, 60%, 80% { transform: translateX(5px); }
+      }
+      .animate-shake {
+        animation: shake 0.5s ease-in-out;
+      }
+    `;
+    document.head.appendChild(style);
+    
+    // 绑定事件
+    calculateBtn.addEventListener('click', calculate);
+    
+    // 输入变化时更新排序信息
+    Object.values(inputs).forEach(input => {
+      input.addEventListener('input', updateSortInfo);
+      input.addEventListener('change', updateSortInfo);
+    });
+    
+    // 支持回车键计算
+    for (const key in inputs) {
+      inputs[key].addEventListener('keyup', (e) => {
+        if (e.key === 'Enter') {
+          calculate();
+        }
+      });
+    }
+    
+    // 初始化排序信息
+    updateSortInfo();
+  </script>
+</body>
+</html>
